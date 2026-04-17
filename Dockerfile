@@ -6,8 +6,12 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV FLASK_ENV=production
 
-# Install system dependencies for OpenCV and other packages
+# Install system dependencies including build tools for NumPy
 RUN apt-get update && apt-get install -y \
+    build-essential \
+    gcc \
+    g++ \
+    python3-dev \
     curl \
     libmagic1 \
     libmagic-dev \
@@ -24,6 +28,9 @@ WORKDIR /app
 
 # Copy requirements first for better caching
 COPY config/requirements.txt ./requirements.txt
+
+# Upgrade pip and install wheel for better package handling
+RUN pip install --upgrade pip setuptools wheel
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
