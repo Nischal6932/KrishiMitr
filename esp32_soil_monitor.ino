@@ -4,9 +4,14 @@
 
 #define SOIL_PIN 34
 
-const char* ssid = "NISCHAL MITTAL";
-const char* password = "S1M8N23H26";
-const char* server = "http://10.72.209.1:10000/update_moisture";
+// WiFi credentials - UPDATE THESE
+const char* ssid = "YOUR_WIFI_SSID";
+const char* password = "YOUR_WIFI_PASSWORD";
+
+// Server configuration - UPDATE THIS after deployment
+// Local testing: "http://192.168.1.X:10000/update_moisture"
+// Deployed server: "http://your-domain.com/update_moisture"
+const char* server = "http://192.168.29.142:10000/update_moisture";
 
 // Calibration values
 int dryValue = 3500;
