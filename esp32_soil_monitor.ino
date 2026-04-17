@@ -9,8 +9,8 @@
 
 // ========== WIFI CONFIGURATION ==========
 // UPDATE THESE WITH YOUR CREDENTIALS
-const char* ssid = "YOUR_WIFI_SSID";
-const char* password = "YOUR_WIFI_PASSWORD";
+const char* ssid = "NISCHAL MITTAL";
+const char* password = "S1M8N23H26";
 
 // ========== SERVER CONFIGURATION ==========
 // UPDATE THIS AFTER DEPLOYMENT
