@@ -1,0 +1,153 @@
+/* Custom CSS for PDF conversion */
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #2c3e50;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+}
+
+h1 {
+    font-size: 28pt;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 10px;
+}
+
+h2 {
+    font-size: 22pt;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 8px;
+}
+
+h3 {
+    font-size: 18pt;
+    color: #34495e;
+}
+
+h4 {
+    font-size: 16pt;
+    color: #7f8c8d;
+}
+
+p {
+    margin-bottom: 1em;
+    text-align: justify;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+    font-size: 10pt;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+code {
+    background-color: #f8f9fa;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: "Monaco", "Menlo", monospace;
+    font-size: 0.9em;
+}
+
+pre {
+    background-color: #f8f9fa;
+    padding: 1em;
+    border-radius: 5px;
+    overflow-x: auto;
+    font-family: "Monaco", "Menlo", monospace;
+    font-size: 9pt;
+}
+
+blockquote {
+    border-left: 4px solid #3498db;
+    margin: 1em 0;
+    padding-left: 1em;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+ul, ol {
+    margin-bottom: 1em;
+    padding-left: 2em;
+}
+
+li {
+    margin-bottom: 0.5em;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1em auto;
+}
+
+.figure {
+    text-align: center;
+    font-size: 10pt;
+    color: #7f8c8d;
+    margin: 1em 0;
+}
+
+.toc {
+    background-color: #f8f9fa;
+    padding: 1em;
+    border-radius: 5px;
+    margin-bottom: 2em;
+}
+
+.toc ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.toc li {
+    margin-bottom: 0.3em;
+}
+
+.toc a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.toc a:hover {
+    text-decoration: underline;
+}
+
+.page-break {
+    page-break-before: always;
+}
+
+ appendix {
+    font-size: 10pt;
+}
+
+.references {
+    font-size: 9pt;
+    line-height: 1.4;
+}

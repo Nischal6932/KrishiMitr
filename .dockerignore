@@ -1,0 +1,17 @@
+.git
+.pytest_cache
+__pycache__/
+*.py[cod]
+*.log
+.DS_Store
+
+config/.env
+frontend/public/uploads/*
+frontend/static/*
+docs/
+data/
+tests/
+utils/
+scripts/
+models/__pycache__/
+

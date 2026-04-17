@@ -1,0 +1,8 @@
+-r requirements.txt
+scikit-learn==1.5.2
+matplotlib==3.9.2
+
+# Install the TensorFlow build appropriate for the target GPU machine.
+# Examples:
+#   NVIDIA CUDA machine: pip install tensorflow[and-cuda]==2.16.1
+#   Apple Silicon:       pip install tensorflow==2.16.1 tensorflow-metal

@@ -1,0 +1,73 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# dotenv
+.env
+
+# virtualenv
+.venv
+venv/
+
+# VS Code
+.vscode/
+
+# Model files (large) - COMMENTED OUT FOR DEPLOYMENT
+# *.keras
+# *.h5
+
+# Test images
+test_*.png
+test_*.jpg
+
+# OS
+.DS_Store
+Thumbs.db
+plant_disease_efficientnet.keras
+
+# Log files
+*.log
+logs/
+
+# Coverage reports
+.coverage
+.coverage.*
+htmlcov/
+
+# pytest
+.pytest_cache/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Static generated files
+static/output_*.mp3
+static/gradcam_output.jpg
+static/*.jpg

@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="{{ language|default('English', true) }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ t.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/style.css') }}">
+</head>
+
+<body>
+<div class="page-shell">
+    <div class="page-backdrop page-backdrop-one"></div>
+    <div class="page-backdrop page-backdrop-two"></div>
+
+    <header class="site-header">
+        <div class="brand-lockup">
+            <div class="brand-mark">SF</div>
+            <div>
+                <div class="brand-eyebrow">Field Intelligence</div>
+                <div class="brand-name">SmartFarm AI</div>
+            </div>
+        </div>
+        <div class="status-pill" id="moistureStatus">
+            <span class="status-dot" id="iotStatusDot"></span>
+            <span id="moistureFeedText">Moisture feed: {{ moisture|default(40, true) }}%</span>
+        </div>
+    </header>
+
+    <main class="page-grid">
+        <section class="hero-panel">
+            <div class="hero-copy">
+                <p class="hero-kicker">Crop Health Desk</p>
+                <h1>{{ t.title }}</h1>
+                <p class="hero-subtitle">
+                    {{ t.subtitle|default('Plant disease detection and field guidance designed for growers, students, and agronomy teams.', true) }}
+                </p>
+            </div>
+
+            <div class="hero-stats">
+                <div class="hero-stat-card">
+                    <span class="hero-stat-label">Input</span>
+                    <strong>Leaf image</strong>
+                    <span>Upload a close, well-lit crop photo</span>
+                </div>
+                <div class="hero-stat-card">
+                    <span class="hero-stat-label">Context</span>
+                    <strong>Field conditions</strong>
+                    <span>Use soil, moisture, and weather to ground the answer</span>
+                </div>
+                <div class="hero-stat-card">
+                    <span class="hero-stat-label">Output</span>
+                    <strong>Actionable guidance</strong>
+                    <span>Disease summary, irrigation cues, and follow-up advice</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="workspace-grid">
+            <section class="panel panel-form">
+                <div class="panel-heading">
+                    <div>
+                        <p class="panel-eyebrow">Analysis Form</p>
+                        <h2>{{ t.upload }}</h2>
+                    </div>
+                    <p class="panel-caption">Built for fast field checks on desktop and mobile.</p>
+                </div>
+
+                <form method="POST" action="/" enctype="multipart/form-data" id="mainForm" class="analysis-form">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>{{ t.upload }}</label>
+                            <div class="file-upload-wrapper">
+                                <input type="file" name="image" id="fileInput" accept="image/*" required class="file-upload-input">
+                                <div class="file-upload-box" id="uploadBox">
+                                    <div class="upload-badge">Leaf Scan</div>
+                                    <div class="file-upload-icon">◌</div>
+                                    <div class="file-upload-text">{{ t.upload_hint|default('Drop an image here or browse from your device.', true) }}</div>
+                                    <div class="file-upload-hint">{{ t.upload_types|default('Accepted formats: JPG, PNG, WEBP', true) }}</div>
+                                    <div class="preview-container{% if original_image %} show{% endif %}" id="previewContainer">
+                                        <img
+                                            id="preview"
+                                            class="preview-image"
+                                            src="{{ original_image if original_image else '' }}"
+                                            alt="Leaf preview"
+                                            style="{% if original_image %}display:block{% else %}display:none{% endif %};"
+                                        >
+                                    </div>
+                                    {% if processed_image %}
+                                    <div class="preview-split">
+                                        <div class="preview-box">
+                                            <p class="preview-label">Uploaded image</p>
+                                            <img src="{{ original_image }}" class="preview-image" alt="Uploaded leaf image">
+                                        </div>
+                                        <div class="preview-box">
+                                            <p class="preview-label">Model focus</p>
+                                            <img src="{{ processed_image }}" class="preview-image" alt="Model focus visualization">
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ t.crop }}</label>
+                            <div class="select-wrapper">
+                                <select name="crop" required>
+                                    <option value="Tomato">{{ t.crop_tomato }}</option>
+                                    <option value="Potato">{{ t.crop_potato }}</option>
+                                    <option value="Pepper">{{ t.crop_pepper }}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ t.soil }}</label>
+                            <div class="select-wrapper">
+                                <select name="soil" required>
+                                    <option value="Clay">{{ t.soil_clay }}</option>
+                                    <option value="Loam">{{ t.soil_loam }}</option>
+                                    <option value="Sandy">{{ t.soil_sandy }}</option>
+                                    <option value="Silt">{{ t.soil_silt }}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>{{ t.moisture }}</label>
+                            <div class="slider-container">
+                                <input type="range" min="0" max="100" value="{{ moisture }}" name="moisture" id="moistureSlider">
+                                <span class="slider-value" id="moistureValue">{{ moisture }}%</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ t.weather }}</label>
+                            <div class="select-wrapper">
+                                <select name="weather" required>
+                                    <option value="Dry">{{ t.weather_dry }}</option>
+                                    <option value="Humid">{{ t.weather_humid }}</option>
+                                    <option value="Rainy">{{ t.weather_rainy }}</option>
+                                    <option value="Hot">{{ t.weather_hot }}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ t.language }}</label>
+                            <div class="select-wrapper">
+                                <select name="language" id="languageSelect">
+                                    <option value="English" {% if language=='English' %}selected{% endif %}>English</option>
+                                    <option value="Hindi" {% if language=='Hindi' %}selected{% endif %}>Hindi</option>
+                                    <option value="Telugu" {% if language=='Telugu' %}selected{% endif %}>Telugu</option>
+                                    <option value="Tamil" {% if language=='Tamil' %}selected{% endif %}>Tamil</option>
+                                    <option value="Kannada" {% if language=='Kannada' %}selected{% endif %}>Kannada</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>{{ t.question }}</label>
+                        <div class="question-row">
+                            <input
+                                type="text"
+                                name="question"
+                                value="{{ user_question|default('', true) }}"
+                                placeholder="{{ t.placeholder|default('Ask a practical follow-up about this crop or image.', true) }}"
+                                class="question-input"
+                            >
+                            <button type="button" id="voiceBtn" class="secondary-btn">{{ t.speak|default('Speak', true) }}</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="analyze-btn">{{ t.button }}</button>
+
+                    {% if description and result is none %}
+                    <div class="notice-card notice-card-warning">
+                        <div class="notice-title">Notice</div>
+                        <div class="notice-copy">{{ description }}</div>
+                    </div>
+                    {% endif %}
+                </form>
+            </section>
+
+            <aside class="panel panel-sidecar">
+                <div class="panel-heading">
+                    <div>
+                        <p class="panel-eyebrow">Field Notes</p>
+                        <h2>Before you analyze</h2>
+                    </div>
+                </div>
+
+                <div class="sidecar-stack">
+                    <div class="sidecar-card">
+                        <h3>Image quality matters</h3>
+                        <p>Center one leaf, avoid heavy shadows, and keep the background calm so the model can focus on the lesion pattern.</p>
+                    </div>
+                    <div class="sidecar-card">
+                        <h3>Context improves guidance</h3>
+                        <p>Soil, moisture, and weather do not change the diagnosis directly, but they do improve the irrigation and advisory output.</p>
+                    </div>
+                    <div class="sidecar-card">
+                        <h3>Confidence is now stricter</h3>
+                        <p>The app will flag uncertain results instead of overstating weak predictions, which makes the final answer more trustworthy.</p>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <section class="panel panel-chat" aria-labelledby="farmerChatTitle">
+            <div class="panel-heading chat-heading">
+                <div>
+                    <p class="panel-eyebrow">Farmer Support Chat</p>
+                    <h2 id="farmerChatTitle">Talk to SmartFarm AI</h2>
+                </div>
+                <p class="panel-caption">Type or speak your problem and continue the conversation until you get a useful next step.</p>
+            </div>
+
+            <div class="chat-shell">
+                <div class="chat-toolbar">
+                    <div class="chat-context-list">
+                        <span class="chat-context-chip" id="chatCropChip">Crop: Tomato</span>
+                        <span class="chat-context-chip" id="chatLangChip">Language: {{ language|default('English', true) }}</span>
+                    </div>
+                    <label class="chat-audio-toggle">
+                        <input type="checkbox" id="chatAutoSpeak" checked>
+                        <span>Auto play replies</span>
+                    </label>
+                </div>
+
+                <div class="chat-log" id="chatLog" aria-live="polite">
+                    <div class="chat-message assistant">
+                        <div class="chat-avatar">AI</div>
+                        <div class="chat-bubble">
+                            Hello farmer. Tell me what problem you are seeing in your crop, soil, irrigation, pests, or weather, and I will guide you step by step.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-composer">
+                    <textarea
+                        id="chatInput"
+                        class="chat-input"
+                        rows="3"
+                        placeholder="Example: My tomato leaves are curling and turning yellow. What should I check first?"
+                    ></textarea>
+                    <div class="chat-actions">
+                        <button type="button" id="chatVoiceBtn" class="secondary-btn">Speak problem</button>
+                        <button type="button" id="chatSendBtn" class="analyze-btn chat-send-btn">Send message</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel panel-marketplace" aria-labelledby="marketplaceTitle">
+            <div class="panel-heading">
+                <div>
+                    <p class="panel-eyebrow">Verified Inputs</p>
+                    <h2 id="marketplaceTitle">{{ t.marketplace_title|default('Trusted agri input sources', true) }}</h2>
+                </div>
+                <p class="panel-caption">Curated external buying links so farmers can compare genuine platforms before purchasing.</p>
+            </div>
+
+            <div class="marketplace-intro">
+                <p id="marketplaceStatus">Loading curated marketplace links...</p>
+            </div>
+            <div class="marketplace-grid" id="marketplaceGrid"></div>
+        </section>
+
+        {% if result is not none %}
+        <section class="panel panel-results">
+            <div class="results-header">
+                <div>
+                    <p class="panel-eyebrow">Diagnosis</p>
+                    <h2 class="prediction-title">{{ result }}</h2>
+                    {% if 'AI Analysis Result:' in description %}
+                    <div class="ai-fallback-badge">
+                        <span class="ai-badge-icon">🤖</span>
+                        <span>AI Enhanced Analysis</span>
+                    </div>
+                    {% endif %}
+                </div>
+                {% if confidence %}
+                <div class="confidence-summary">
+                    <div class="health-indicator">
+                        {% if 'healthy' in result.lower() %}
+                            <span class="health-status healthy">Healthy plant</span>
+                        {% elif confidence > 85 %}
+                            <span class="health-status high-risk">High disease risk</span>
+                        {% else %}
+                            <span class="health-status moderate-risk">Review carefully</span>
+                        {% endif %}
+                    </div>
+                    <div class="confidence-wrapper">
+                        <div class="confidence-label">
+                            <span>Confidence</span>
+                            <span>{{ confidence }}%</span>
+                        </div>
+                        <div class="confidence-bar-bg">
+                            <div class="confidence-bar-fill" style="width: {{ confidence }}%;"></div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="info-grid">
+                {% if description %}
+                <div class="info-card">
+                    <div class="info-card-title">{{ t.disease_desc }}</div>
+                    <div class="info-card-content">{{ description }}</div>
+                </div>
+                {% endif %}
+
+                <div class="info-card">
+                    <div class="info-card-title">{{ t.ai_guidance }}</div>
+                    <div class="info-card-content" id="ai-disease-advice">{{ t.loading_ai|default('Generating guidance...', true) }}</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-title">{{ t.ai_answer }}</div>
+                    <div class="info-card-content" id="ai-question-answer">{{ t.waiting_question|default('Waiting for your question...', true) }}</div>
+                </div>
+
+                {% if treatment %}
+                <div class="info-card">
+                    <div class="info-card-title">{{ t.treatment }}</div>
+                    <div class="info-card-content">{{ treatment_summary or treatment }}</div>
+                </div>
+                {% endif %}
+
+                {% if soil_advice %}
+                <div class="info-card">
+                    <div class="info-card-title">{{ t.soil_card }}</div>
+                    <div class="info-card-content">{{ soil_advice }}</div>
+                </div>
+                {% endif %}
+
+                {% if irrigation_advice %}
+                <div class="info-card">
+                    <div class="info-card-title">{{ t.irrigation }}</div>
+                    <div class="info-card-content">{{ irrigation_advice }}</div>
+                </div>
+                {% endif %}
+
+                {% if weather_analysis %}
+                <div class="info-card">
+                    <div class="info-card-title">{{ t.weather_card }}</div>
+                    <div class="info-card-content">{{ weather_analysis }}</div>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if recommended_actions %}
+            <div class="action-section">
+                <div class="section-title-row">
+                    <h3>{{ t.action_plan_title|default('Immediate recommended actions', true) }}</h3>
+                    {% if expert_support_recommended %}
+                    <span class="section-pill">{{ t.expert_flag|default('Expert review recommended', true) }}</span>
+                    {% endif %}
+                </div>
+                <div class="action-list">
+                    {% for action in recommended_actions %}
+                    <div class="action-item">
+                        <span class="action-index">{{ loop.index }}</span>
+                        <p>{{ action }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if recommended_products %}
+            <div class="action-section">
+                <div class="section-title-row">
+                    <h3>{{ t.marketplace_context_title|default('Trusted products and buying links', true) }}</h3>
+                    <span class="section-pill">{{ t.external_links|default('External links', true) }}</span>
+                </div>
+                <div class="marketplace-grid contextual-grid">
+                    {% for product in recommended_products %}
+                    <article class="market-card">
+                        <div class="market-card-top">
+                            <div>
+                                <p class="market-type">{{ product.product_type }}</p>
+                                <h4>{{ product.product_name }}</h4>
+                            </div>
+                            <span class="market-badge">{{ product.verification_label }}</span>
+                        </div>
+                        <p class="market-reason">{{ product.reason }}</p>
+                        <p class="market-trust">{{ product.trust_note }}</p>
+                        <div class="market-footer">
+                            <span>{{ product.brand_or_seller }}</span>
+                            <a href="{{ product.external_url }}" target="_blank" rel="noopener noreferrer">Open site</a>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if care_plan %}
+            <div class="action-section">
+                <div class="section-title-row">
+                    <h3>{{ t.care_plan_title|default('7-Day Crop Care Plan', true) }}</h3>
+                </div>
+                <div class="care-plan-grid">
+                    {% for step in care_plan %}
+                    <article class="care-step">
+                        <div class="care-step-day">{{ step.day }}</div>
+                        <h4>{{ step.title }}</h4>
+                        <p>{{ step.description }}</p>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if top2_predictions %}
+            <div class="alt-predictions">
+                <div class="alt-predictions-title">{{ t.alternatives }}</div>
+                <div class="alt-list">
+                    {% for disease, prob in top2_predictions %}
+                    <div class="alt-item">
+                        <span class="alt-name">{{ disease }}</span>
+                        <span class="alt-prob">{{ (prob*100)|round(2) }}%</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if chat_response %}
+            <div class="info-card inline-spacer">
+                <div class="info-card-title">{{ t.ai_response }}</div>
+                <div class="info-card-content">{{ chat_response }}</div>
+            </div>
+            {% endif %}
+
+            <div class="action-section expert-support-section" id="expertSupportSection">
+                <div class="section-title-row">
+                    <h3>{{ t.expert_support_title|default('Need an expert callback?', true) }}</h3>
+                    {% if expert_support_recommended %}
+                    <span class="section-pill section-pill-alert">{{ t.priority_flag|default('Priority support suggested', true) }}</span>
+                    {% endif %}
+                </div>
+                <p class="expert-support-copy">
+                    {{ t.expert_support_copy|default('Share your crop issue and contact number. The request will be stored for agronomy follow-up.', true) }}
+                </p>
+                <form id="expertSupportForm" class="expert-support-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>{{ t.farmer_name|default('Farmer name', true) }}</label>
+                            <input type="text" name="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ t.phone|default('Phone number', true) }}</label>
+                            <input type="tel" name="phone" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ t.location|default('Village / location (optional)', true) }}</label>
+                            <input type="text" name="location" placeholder="Village, district or nearby town">
+                        </div>
+                        <div class="form-group">
+                            <label>{{ t.issue_topic|default('Issue topic', true) }}</label>
+                            <input type="text" name="issue" value="{{ result }}" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>{{ t.issue_details|default('Describe what is happening in the field', true) }}</label>
+                            <textarea name="description" rows="4" required>{{ treatment_summary or description }}</textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="analyze-btn support-submit-btn">{{ t.support_button|default('Request expert support', true) }}</button>
+                    <div class="support-feedback" id="expertSupportFeedback" aria-live="polite"></div>
+                </form>
+            </div>
+        </section>
+        {% endif %}
+    </main>
+</div>
+
+<script>
+    const currentDiagnosisData = {
+        result: {{ result|tojson if result is not none else 'null' }},
+        diagnosisKey: {{ diagnosis_key|tojson if diagnosis_key is defined else 'null' }},
+        treatmentSummary: {{ treatment_summary|tojson if treatment_summary is defined else 'null' }},
+        expertSupportRecommended: {{ expert_support_recommended|tojson if expert_support_recommended is defined else 'false' }},
+        imageReference: {{ original_image_reference|tojson if original_image_reference is defined else 'null' }}
+    };
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const speechLangMap = {
+        English: 'en-US',
+        Hindi: 'hi-IN',
+        Telugu: 'te-IN',
+        Tamil: 'ta-IN',
+        Kannada: 'kn-IN'
+    };
+
+    function getFieldContext() {
+        return {
+            crop: document.querySelector("select[name='crop']")?.value || "Tomato",
+            soil: document.querySelector("select[name='soil']")?.value || "Loam",
+            moisture: document.getElementById("moistureSlider")?.value || "40",
+            weather: document.querySelector("select[name='weather']")?.value || "Dry",
+            language: document.querySelector("select[name='language']")?.value || "English"
+        };
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text || '';
+        return div.innerHTML;
+    }
+
+    function playAudioIfAllowed(url, shouldAutoplay) {
+        if (!url) return;
+        const audio = new Audio(url);
+        audio.volume = 0.85;
+        if (shouldAutoplay) {
+            audio.play().catch(() => {});
+        }
+    }
+
+    function renderMarketplaceCards(items, containerId = 'marketplaceGrid') {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        if (!items || items.length === 0) {
+            container.innerHTML = "<div class='market-empty'>No trusted marketplace links are available for this filter yet.</div>";
+            return;
+        }
+
+        container.innerHTML = items.map((item) => `
+            <article class="market-card">
+                <div class="market-card-top">
+                    <div>
+                        <p class="market-type">${escapeHtml(item.product_type || '')}</p>
+                        <h4>${escapeHtml(item.product_name || '')}</h4>
+                    </div>
+                    <span class="market-badge">${escapeHtml(item.verification_label || '')}</span>
+                </div>
+                <p class="market-reason">${escapeHtml(item.reason || '')}</p>
+                <p class="market-trust">${escapeHtml(item.trust_note || '')}</p>
+                <div class="market-footer">
+                    <span>${escapeHtml(item.brand_or_seller || '')}</span>
+                    <a href="${item.external_url}" target="_blank" rel="noopener noreferrer">Open site</a>
+                </div>
+            </article>
+        `).join('');
+    }
+
+    async function loadMarketplaceLinks() {
+        const status = document.getElementById('marketplaceStatus');
+        const params = new URLSearchParams();
+        const context = getFieldContext();
+        params.set('crop', context.crop);
+        if (currentDiagnosisData.diagnosisKey) {
+            params.set('disease', currentDiagnosisData.diagnosisKey);
+        }
+
+        try {
+            const response = await fetch(`/marketplace?${params.toString()}`);
+            if (!response.ok) {
+                throw new Error('Marketplace unavailable');
+            }
+            const data = await response.json();
+            renderMarketplaceCards(data.items || []);
+            if (status) {
+                status.textContent = currentDiagnosisData.diagnosisKey
+                    ? 'Showing trusted links matched to the current crop and diagnosis.'
+                    : 'Showing trusted links for the selected crop.';
+            }
+        } catch (error) {
+            if (status) {
+                status.textContent = 'Unable to load trusted marketplace links right now.';
+            }
+            renderMarketplaceCards([]);
+        }
+    }
+
+    function renderChatMessage(role, text, audioUrl) {
+        const chatLog = document.getElementById('chatLog');
+        if (!chatLog) return;
+
+        const item = document.createElement('div');
+        item.className = `chat-message ${role}`;
+
+        const avatar = document.createElement('div');
+        avatar.className = 'chat-avatar';
+        avatar.textContent = role === 'assistant' ? 'AI' : 'You';
+
+        const bubble = document.createElement('div');
+        bubble.className = 'chat-bubble';
+        bubble.innerHTML = escapeHtml(text).replace(/\n/g, '<br>');
+
+        item.appendChild(avatar);
+        item.appendChild(bubble);
+
+        if (audioUrl && role === 'assistant') {
+            const audioRow = document.createElement('div');
+            audioRow.className = 'chat-audio-inline';
+            audioRow.innerHTML = `<button class="audio-btn" type="button">Play reply</button><audio controls class="audio-player" src="${audioUrl}"></audio>`;
+            bubble.appendChild(audioRow);
+            const btn = audioRow.querySelector('button');
+            const audio = audioRow.querySelector('audio');
+            btn.addEventListener('click', function() {
+                audio.play().catch(() => {});
+            });
+        }
+
+        chatLog.appendChild(item);
+        chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function setChatPending(isPending) {
+        const chatSendBtn = document.getElementById('chatSendBtn');
+        const chatVoiceBtn = document.getElementById('chatVoiceBtn');
+        if (chatSendBtn) {
+            chatSendBtn.disabled = isPending;
+            chatSendBtn.textContent = isPending ? 'Sending...' : 'Send message';
+        }
+        if (chatVoiceBtn && isPending) {
+            chatVoiceBtn.disabled = true;
+        }
+        if (chatVoiceBtn && !isPending && !SpeechRecognition) {
+            chatVoiceBtn.disabled = true;
+            chatVoiceBtn.textContent = 'Voice unavailable';
+        }
+        if (chatVoiceBtn && !isPending && SpeechRecognition && chatVoiceBtn.dataset.listening !== 'true') {
+            chatVoiceBtn.disabled = false;
+            chatVoiceBtn.textContent = 'Speak problem';
+        }
+    }
+
+    function createSpeechHandler(button, input, options = {}) {
+        if (!button || !input) return;
+        if (!SpeechRecognition) {
+            button.disabled = true;
+            button.textContent = 'Voice unavailable';
+            return;
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.maxAlternatives = 1;
+
+        const syncLanguage = () => {
+            const language = getFieldContext().language;
+            recognition.lang = speechLangMap[language] || 'en-US';
+        };
+
+        syncLanguage();
+        document.querySelector("select[name='language']")?.addEventListener('change', syncLanguage);
+
+        button.addEventListener('click', function() {
+            button.dataset.listening = 'true';
+            button.disabled = true;
+            button.textContent = options.listeningLabel || '{{ t.listening|default("Listening...", true) }}';
+            recognition.start();
+        });
+
+        recognition.onresult = function(event) {
+            let transcript = '';
+            for (let i = event.resultIndex; i < event.results.length; i += 1) {
+                transcript += event.results[i][0].transcript;
+            }
+            input.value = transcript.trim();
+            if (options.onTranscript) {
+                options.onTranscript(transcript.trim());
+            }
+        };
+
+        recognition.onend = function() {
+            button.dataset.listening = 'false';
+            button.disabled = false;
+            button.textContent = options.defaultLabel;
+        };
+
+        recognition.onerror = function() {
+            button.dataset.listening = 'false';
+            button.disabled = false;
+            button.textContent = options.defaultLabel;
+            if ('placeholder' in input) {
+                input.placeholder = options.errorPlaceholder || 'Voice input unavailable. Please type your message.';
+            }
+        };
+    }
+
+    async function loadAIAdvice() {
+        const result = {{ result|tojson if result is not none else 'null' }};
+        if (!result) return;
+
+        const context = getFieldContext();
+        const questionInput = document.querySelector("input[name='question']");
+        const question = questionInput ? questionInput.value : "";
+        const diseaseBox = document.getElementById("ai-disease-advice");
+        const questionBox = document.getElementById("ai-question-answer");
+
+        if (diseaseBox) {
+            diseaseBox.innerHTML =
+                "<div class='loading-block'>" +
+                "<div class='loading-label'>{{ t.loading_ai|default('Generating guidance...', true) }}</div>" +
+                "<div class='loading-track'><div id='diseaseProgress' class='loading-bar'></div></div>" +
+                "</div>";
+        }
+
+        if (question && question.trim() !== "" && questionBox) {
+            questionBox.innerHTML =
+                "<div class='loading-block'>" +
+                "<div class='loading-label'>{{ t.waiting_question|default('Preparing your answer...', true) }}</div>" +
+                "<div class='loading-track'><div id='questionProgress' class='loading-bar'></div></div>" +
+                "</div>";
+        } else if (questionBox) {
+            questionBox.innerText = "{{ t.no_question|default('No question asked.', true) }}";
+        }
+
+        try {
+            const response = await fetch("/ai_advice", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    crop: context.crop,
+                    disease: result,
+                    diagnosis_key: currentDiagnosisData.diagnosisKey,
+                    soil: context.soil,
+                    moisture: context.moisture,
+                    weather: context.weather,
+                    question: question,
+                    language: context.language
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error("API failed");
+            }
+
+            const data = await response.json();
+
+            if (diseaseBox) {
+                const audioHtml = data.disease_audio
+                    ? `<br><br><div class="audio-row"><button class="audio-btn" onclick="this.nextElementSibling.play()">Play advice</button><audio controls src="${data.disease_audio}" class="audio-player"></audio></div>`
+                    : "";
+                diseaseBox.innerHTML =
+                    "<strong>{{ t.disease_advice|default('AI disease guidance', true) }}:</strong><br>" +
+                    escapeHtml(data.advice || "No advice available").replace(/\n/g, "<br>") +
+                    audioHtml;
+                playAudioIfAllowed(data.disease_audio, true);
+            }
+
+            if (question && question.trim() !== "" && questionBox) {
+                const qAudioHtml = data.question_audio
+                    ? `<br><br><div class="audio-row"><button class="audio-btn" onclick="this.nextElementSibling.play()">Play answer</button><audio controls src="${data.question_audio}" class="audio-player"></audio></div>`
+                    : "";
+                questionBox.innerHTML =
+                    "<strong>{{ t.question_label|default('Your question', true) }}:</strong> " + escapeHtml(question) +
+                    "<br><br><strong>{{ t.ai_answer_label|default('AI answer', true) }}:</strong><br>" +
+                    escapeHtml(data.question_answer || "No answer available").replace(/\n/g, "<br>") +
+                    qAudioHtml;
+                playAudioIfAllowed(data.question_audio, true);
+            }
+        } catch (e) {
+            if (diseaseBox) {
+                diseaseBox.innerText = "{{ t.ai_error|default('AI guidance is temporarily unavailable.', true) }}";
+            }
+            if (questionBox) {
+                questionBox.innerText = "{{ t.ai_error|default('AI guidance is temporarily unavailable.', true) }}";
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById("fileInput");
+        const preview = document.getElementById("preview");
+        const previewContainer = document.getElementById("previewContainer");
+        const moistureSlider = document.getElementById("moistureSlider");
+        const moistureValue = document.getElementById("moistureValue");
+        const dropZone = document.getElementById("uploadBox");
+        const languageSelect = document.getElementById("languageSelect");
+        const cropSelect = document.querySelector("select[name='crop']");
+        const questionVoiceBtn = document.getElementById("voiceBtn");
+        const questionInput = document.querySelector("input[name='question']");
+        const chatInput = document.getElementById('chatInput');
+        const chatSendBtn = document.getElementById('chatSendBtn');
+        const chatVoiceBtn = document.getElementById('chatVoiceBtn');
+        const chatAutoSpeak = document.getElementById('chatAutoSpeak');
+        const chatCropChip = document.getElementById('chatCropChip');
+        const chatLangChip = document.getElementById('chatLangChip');
+        const chatHistory = [];
+
+        const refreshChatContext = () => {
+            const context = getFieldContext();
+            if (chatCropChip) chatCropChip.textContent = `Crop: ${context.crop}`;
+            if (chatLangChip) chatLangChip.textContent = `Language: ${context.language}`;
+        };
+
+        refreshChatContext();
+        cropSelect?.addEventListener('change', refreshChatContext);
+        languageSelect?.addEventListener('change', refreshChatContext);
+
+        if (fileInput && preview && previewContainer) {
+            fileInput.addEventListener('change', function(evt) {
+                const file = evt.target.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.style.display = "block";
+                        previewContainer.style.display = "block";
+                        previewContainer.classList.add("show");
+                    };
+                    reader.onerror = function() {
+                        preview.style.display = "none";
+                        previewContainer.style.display = "none";
+                        previewContainer.classList.remove("show");
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.style.display = "none";
+                    previewContainer.style.display = "none";
+                    previewContainer.classList.remove("show");
+                }
+            });
+        }
+
+        if (moistureSlider && moistureValue) {
+            moistureSlider.addEventListener('input', function() {
+                moistureValue.textContent = this.value + "%";
+            });
+        }
+
+        if (dropZone) {
+            dropZone.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                dropZone.classList.add('drag-active');
+            });
+            dropZone.addEventListener('dragleave', function() {
+                dropZone.classList.remove('drag-active');
+            });
+            dropZone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                dropZone.classList.remove('drag-active');
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/') && fileInput) {
+                    const dt = new DataTransfer();
+                    dt.items.add(file);
+                    fileInput.files = dt.files;
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        preview.src = event.target.result;
+                        preview.style.display = "block";
+                        previewContainer.style.display = "block";
+                        previewContainer.classList.add("show");
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        createSpeechHandler(questionVoiceBtn, questionInput, {
+            defaultLabel: '{{ t.speak|default("Speak", true) }}',
+            listeningLabel: '{{ t.listening|default("Listening...", true) }}',
+            errorPlaceholder: 'Voice input unavailable. Please type your question.'
+        });
+
+        createSpeechHandler(chatVoiceBtn, chatInput, {
+            defaultLabel: 'Speak problem',
+            listeningLabel: 'Listening...',
+            errorPlaceholder: 'Voice input unavailable. Please type your farming problem.'
+        });
+
+        async function sendChatMessage() {
+            if (!chatInput || !chatSendBtn) return;
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            renderChatMessage('user', message);
+            chatHistory.push({ role: 'user', content: message });
+            chatInput.value = '';
+            setChatPending(true);
+
+            const context = getFieldContext();
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: message,
+                        history: chatHistory,
+                        crop: context.crop,
+                        soil: context.soil,
+                        moisture: context.moisture,
+                        weather: context.weather,
+                        language: context.language,
+                        diagnosis: currentDiagnosisData.result,
+                        treatment_summary: currentDiagnosisData.treatmentSummary
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Chat request failed');
+                }
+
+                const data = await response.json();
+                const reply = data.reply || 'I could not prepare a reply right now. Please try again.';
+                chatHistory.push({ role: 'assistant', content: reply });
+                renderChatMessage('assistant', reply, data.audio);
+                playAudioIfAllowed(data.audio, Boolean(chatAutoSpeak?.checked));
+            } catch (error) {
+                const fallbackReply = 'The chat assistant is temporarily unavailable. Please try again in a moment.';
+                chatHistory.push({ role: 'assistant', content: fallbackReply });
+                renderChatMessage('assistant', fallbackReply);
+            } finally {
+                setChatPending(false);
+            }
+        }
+
+        chatSendBtn?.addEventListener('click', sendChatMessage);
+        chatInput?.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendChatMessage();
+            }
+        });
+
+        const expertSupportForm = document.getElementById('expertSupportForm');
+        const expertSupportFeedback = document.getElementById('expertSupportFeedback');
+
+        expertSupportForm?.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const submitButton = expertSupportForm.querySelector("button[type='submit']");
+            const formData = new FormData(expertSupportForm);
+            const payload = Object.fromEntries(formData.entries());
+            payload.crop = getFieldContext().crop;
+            payload.issue = payload.issue || currentDiagnosisData.result || 'Crop issue';
+            payload.image_reference = currentDiagnosisData.imageReference;
+
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Submitting...';
+            }
+            if (expertSupportFeedback) {
+                expertSupportFeedback.textContent = '';
+                expertSupportFeedback.classList.remove('success', 'error');
+            }
+
+            try {
+                const response = await fetch('/expert_support', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+                if (!response.ok || data.success === false) {
+                    throw new Error(data.error || 'Submission failed');
+                }
+                if (expertSupportFeedback) {
+                    expertSupportFeedback.textContent = data.message || 'Support request submitted successfully.';
+                    expertSupportFeedback.classList.add('success');
+                }
+                expertSupportForm.reset();
+            } catch (error) {
+                if (expertSupportFeedback) {
+                    expertSupportFeedback.textContent = error.message || 'Could not submit the support request.';
+                    expertSupportFeedback.classList.add('error');
+                }
+            } finally {
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.textContent = '{{ t.support_button|default("Request expert support", true) }}';
+                }
+            }
+        });
+
+        {% if result is not none %}
+        loadAIAdvice();
+        {% endif %}
+        loadMarketplaceLinks();
+
+        // Real-time moisture monitoring
+        async function updateMoistureDisplay() {
+            try {
+                const response = await fetch('/get_moisture');
+                if (!response.ok) return;
+                
+                const data = await response.json();
+                const moistureStatus = document.getElementById('moistureStatus');
+                const moistureFeedText = document.getElementById('moistureFeedText');
+                const iotStatusDot = document.getElementById('iotStatusDot');
+                const moistureSlider = document.getElementById('moistureSlider');
+                const moistureValue = document.getElementById('moistureValue');
+                
+                // Update moisture display
+                if (moistureFeedText) {
+                    const statusText = data.status === 'stale' ? ' (stale)' : '';
+                    moistureFeedText.textContent = `Moisture feed: ${data.moisture}%${statusText}`;
+                }
+                
+                // Update slider if manual override not in use
+                if (moistureSlider && moistureValue && !moistureSlider.matches(':active')) {
+                    moistureSlider.value = data.moisture;
+                    moistureValue.textContent = data.moisture + '%';
+                }
+                
+                // Update IoT status indicator
+                if (iotStatusDot && moistureStatus) {
+                    // Remove all status classes
+                    iotStatusDot.classList.remove('status-online', 'status-intermittent', 'status-offline');
+                    moistureStatus.classList.remove('status-online', 'status-intermittent', 'status-offline');
+                    
+                    // Add appropriate status class
+                    if (data.time_since_update < 60) {
+                        iotStatusDot.classList.add('status-online');
+                        moistureStatus.classList.add('status-online');
+                    } else if (data.time_since_update < 300) {
+                        iotStatusDot.classList.add('status-intermittent');
+                        moistureStatus.classList.add('status-intermittent');
+                    } else {
+                        iotStatusDot.classList.add('status-offline');
+                        moistureStatus.classList.add('status-offline');
+                    }
+                }
+                
+                // Update page title based on status
+                if (data.time_since_update > 300) {
+                    document.title = 'Sensor offline | SmartFarm AI';
+                } else {
+                    document.title = '{{ t.title }}';
+                }
+                
+            } catch (e) {
+                console.error('Failed to update moisture display:', e);
+                const moistureFeedText = document.getElementById('moistureFeedText');
+                if (moistureFeedText) {
+                    moistureFeedText.textContent = 'Moisture feed: Connection lost';
+                }
+            }
+        }
+
+        // Update moisture display every 3 seconds
+        setInterval(updateMoistureDisplay, 3000);
+        
+        // Initial moisture update
+        updateMoistureDisplay();
+    });
+</script>
+</body>
+</html>

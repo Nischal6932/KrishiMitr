@@ -1,0 +1,282 @@
+[
+  {
+    "model": "plant_disease_realworld_15class_best_v4.keras",
+    "samples_evaluated": 3652,
+    "samples_skipped": 0,
+    "top1_accuracy": 0.2152,
+    "avg_confidence": 0.2345,
+    "avg_confidence_correct": 0.3467,
+    "avg_confidence_incorrect": 0.2037,
+    "uncertain_rate": 0.8705,
+    "class_accuracies": {
+      "Pepper_Bacterial_spot": {
+        "accuracy": 1.0,
+        "correct": 250,
+        "total": 250
+      },
+      "Pepper_Healthy": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 250
+      },
+      "Potato_Early_blight": {
+        "accuracy": 0.992,
+        "correct": 248,
+        "total": 250
+      },
+      "Potato_Healthy": {
+        "accuracy": 0.0066,
+        "correct": 1,
+        "total": 152
+      },
+      "Potato_Late_blight": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 250
+      },
+      "Tomato_Bacterial_spot": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 250
+      },
+      "Tomato_Early_blight": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 250
+      },
+      "Tomato_Healthy": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 250
+      },
+      "Tomato_Late_blight": {
+        "accuracy": 0.584,
+        "correct": 146,
+        "total": 250
+      },
+      "Tomato_Leaf_mold": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 250
+      },
+      "Tomato_Mosaic_virus": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 250
+      },
+      "Tomato_Septoria_leaf_spot": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 250
+      },
+      "Tomato_Spider_mites": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 250
+      },
+      "Tomato_Target_spot": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 250
+      },
+      "Tomato_Yellow_leaf_curl_virus": {
+        "accuracy": 0.564,
+        "correct": 141,
+        "total": 250
+      }
+    },
+    "top_confident_mistakes": [
+      {
+        "true_label": "Pepper__bell___healthy",
+        "predicted_label": "Pepper__bell___Bacterial_spot",
+        "correct": false,
+        "confidence": 0.6218656853242813,
+        "uncertain": false,
+        "image": "51e49986-3954-472f-8504-a95452b0fc88___JR_HL 7666.JPG",
+        "class": "Pepper_Healthy"
+      },
+      {
+        "true_label": "Pepper__bell___healthy",
+        "predicted_label": "Pepper__bell___Bacterial_spot",
+        "correct": false,
+        "confidence": 0.6204589004493707,
+        "uncertain": false,
+        "image": "0354e474-d930-4098-97f8-0acee01817ea___JR_HL 7623.JPG",
+        "class": "Pepper_Healthy"
+      },
+      {
+        "true_label": "Pepper__bell___healthy",
+        "predicted_label": "Pepper__bell___Bacterial_spot",
+        "correct": false,
+        "confidence": 0.6164103026910362,
+        "uncertain": false,
+        "image": "9aa2ced4-eedc-4e3e-97a2-d093a89530b3___JR_HL 5885.JPG",
+        "class": "Pepper_Healthy"
+      },
+      {
+        "true_label": "Pepper__bell___healthy",
+        "predicted_label": "Pepper__bell___Bacterial_spot",
+        "correct": false,
+        "confidence": 0.6114804768292502,
+        "uncertain": false,
+        "image": "3b0f8dbb-905b-4bdc-b4c6-231a22a47287___JR_HL 7610.JPG",
+        "class": "Pepper_Healthy"
+      },
+      {
+        "true_label": "Pepper__bell___healthy",
+        "predicted_label": "Pepper__bell___Bacterial_spot",
+        "correct": false,
+        "confidence": 0.6108511077197865,
+        "uncertain": false,
+        "image": "568a1f4a-c07c-48a5-8ea6-64b48008e85c___JR_HL 7616.JPG",
+        "class": "Pepper_Healthy"
+      }
+    ],
+    "skipped_examples": []
+  },
+  {
+    "model": "plant_disease_repo_finetuned.keras",
+    "samples_evaluated": 3652,
+    "samples_skipped": 0,
+    "top1_accuracy": 0.2081,
+    "avg_confidence": 0.2032,
+    "avg_confidence_correct": 0.318,
+    "avg_confidence_incorrect": 0.173,
+    "uncertain_rate": 1.0,
+    "class_accuracies": {
+      "Pepper_Bacterial_spot": {
+        "accuracy": 0.98,
+        "correct": 245,
+        "total": 250
+      },
+      "Pepper_Healthy": {
+        "accuracy": 0.072,
+        "correct": 18,
+        "total": 250
+      },
+      "Potato_Early_blight": {
+        "accuracy": 0.044,
+        "correct": 11,
+        "total": 250
+      },
+      "Potato_Healthy": {
+        "accuracy": 0.0263,
+        "correct": 4,
+        "total": 152
+      },
+      "Potato_Late_blight": {
+        "accuracy": 0.876,
+        "correct": 219,
+        "total": 250
+      },
+      "Tomato_Bacterial_spot": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 250
+      },
+      "Tomato_Early_blight": {
+        "accuracy": 0.456,
+        "correct": 114,
+        "total": 250
+      },
+      "Tomato_Healthy": {
+        "accuracy": 0.26,
+        "correct": 65,
+        "total": 250
+      },
+      "Tomato_Late_blight": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 250
+      },
+      "Tomato_Leaf_mold": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 250
+      },
+      "Tomato_Mosaic_virus": {
+        "accuracy": 0.008,
+        "correct": 2,
+        "total": 250
+      },
+      "Tomato_Septoria_leaf_spot": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 250
+      },
+      "Tomato_Spider_mites": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 250
+      },
+      "Tomato_Target_spot": {
+        "accuracy": 0.328,
+        "correct": 82,
+        "total": 250
+      },
+      "Tomato_Yellow_leaf_curl_virus": {
+        "accuracy": 0.0,
+        "correct": 0,
+        "total": 250
+      }
+    },
+    "top_confident_mistakes": [
+      {
+        "true_label": "Pepper__bell___healthy",
+        "predicted_label": "Pepper__bell___Bacterial_spot",
+        "correct": false,
+        "confidence": 0.5254113946883024,
+        "uncertain": true,
+        "image": "939d6e91-0bd9-4b1a-a608-5b2bfbd94258___JR_HL 7600.JPG",
+        "class": "Pepper_Healthy"
+      },
+      {
+        "true_label": "Pepper__bell___healthy",
+        "predicted_label": "Pepper__bell___Bacterial_spot",
+        "correct": false,
+        "confidence": 0.5229481001992197,
+        "uncertain": true,
+        "image": "46b55f82-ee0c-4db8-98da-710f0423c1b9___JR_HL 8389.JPG",
+        "class": "Pepper_Healthy"
+      },
+      {
+        "true_label": "Pepper__bell___healthy",
+        "predicted_label": "Pepper__bell___Bacterial_spot",
+        "correct": false,
+        "confidence": 0.5225403208941182,
+        "uncertain": true,
+        "image": "91cb4421-e15b-4125-a854-d1d2c65b1267___JR_HL 5936.JPG",
+        "class": "Pepper_Healthy"
+      },
+      {
+        "true_label": "Pepper__bell___healthy",
+        "predicted_label": "Pepper__bell___Bacterial_spot",
+        "correct": false,
+        "confidence": 0.5218327038912924,
+        "uncertain": true,
+        "image": "0354e474-d930-4098-97f8-0acee01817ea___JR_HL 7623.JPG",
+        "class": "Pepper_Healthy"
+      },
+      {
+        "true_label": "Pepper__bell___healthy",
+        "predicted_label": "Pepper__bell___Bacterial_spot",
+        "correct": false,
+        "confidence": 0.5204926844269439,
+        "uncertain": true,
+        "image": "f9c0c883-e492-417c-94ac-f57bd6db1b78___JR_HL 8480.JPG",
+        "class": "Pepper_Healthy"
+      }
+    ],
+    "skipped_examples": []
+  },
+  {
+    "model": "plant_disease_repo_mobilenet.keras",
+    "error": "<class 'keras.src.models.functional.Functional'> could not be deserialized properly. Please ensure that components that are Python object instances (layers, models, etc.) returned by `get_config()` are explicitly deserialized in the model's `from_config()` method.\n\nconfig={'module': 'keras.src.models.functional', 'class_name': 'Functional', 'config': {}, 'registered_name': 'Functional', 'build_config': {'input_shape': None}, 'compile_config': None}.\n\nException encountered: <class 'keras.src.models.functional.Functional'> could not be deserialized properly. Please ensure that components that are Python object instances (layers, models, etc.) returned by `get_config()` are explicitly deserialized in the model's `from_config()` method.\n\nconfig={'module': 'keras.src.models.functional', 'class_name': 'Functional', 'config': {}, 'registered_name': 'Functional', 'build_config': {'input_shape': None}, 'compile_config': {}, 'name': 'MobileNetV3Large', 'inbound_nodes': [{'args': [{'class_name': '__keras_tensor__', 'config': {'shape': [None, 224, 224, 3], 'dtype': 'float32', 'keras_history': ['rescaling', 0, 0]}}], 'kwargs': {'training': False, 'mask': None}}]}.\n\nException encountered: <class 'keras.src.layers.normalization.batch_normalization.BatchNormalization'> could not be deserialized properly. Please ensure that components that are Python object instances (layers, models, etc.) returned by `get_config()` are explicitly deserialized in the model's `from_config()` method.\n\nconfig={'module': 'keras.layers', 'class_name': 'BatchNormalization', 'config': {'name': 'conv_bn', 'trainable': False, 'dtype': {'module': 'keras', 'class_name': 'DTypePolicy', 'config': {'name': 'float32'}, 'registered_name': None, 'shared_object_id': 13150066192}, 'axis': -1, 'momentum': 0.999, 'epsilon': 0.001, 'center': True, 'scale': True, 'beta_initializer': {'module': 'keras.initializers', 'class_name': 'Zeros', 'config': {}, 'registered_name': None}, 'gamma_initializer': {'module': 'keras.initializers', 'class_name': 'Ones', 'config': {}, 'registered_name': None}, 'moving_mean_initializer': {'module': 'keras.initializers', 'class_name': 'Zeros', 'config': {}, 'registered_name': None}, 'moving_variance_initializer': {'module': 'keras.initializers', 'class_name': 'Ones', 'config': {}, 'registered_name': None}, 'beta_regularizer': None, 'gamma_regularizer': None, 'beta_constraint': None, 'gamma_constraint': None, 'synchronized': False, 'renorm': False, 'renorm_clipping': None, 'renorm_momentum': 0.99}, 'registered_name': None, 'build_config': {'input_shape': [None, 112, 112, 16]}, 'name': 'conv_bn', 'inbound_nodes': [{'args': [{'class_name': '__keras_tensor__', 'config': {'shape': [None, 112, 112, 16], 'dtype': 'float32', 'keras_history': ['conv', 0, 0]}}], 'kwargs': {'mask': None}}]}.\n\nException encountered: Error when deserializing class 'BatchNormalization' using config={'name': 'conv_bn', 'trainable': False, 'dtype': 'float32', 'axis': -1, 'momentum': 0.999, 'epsilon': 0.001, 'center': True, 'scale': True, 'beta_initializer': {'module': 'keras.initializers', 'class_name': 'Zeros', 'config': {}, 'registered_name': None}, 'gamma_initializer': {'module': 'keras.initializers', 'class_name': 'Ones', 'config': {}, 'registered_name': None}, 'moving_mean_initializer': {'module': 'keras.initializers', 'class_name': 'Zeros', 'config': {}, 'registered_name': None}, 'moving_variance_initializer': {'module': 'keras.initializers', 'class_name': 'Ones', 'config': {}, 'registered_name': None}, 'beta_regularizer': None, 'gamma_regularizer': None, 'beta_constraint': None, 'gamma_constraint': None, 'synchronized': False, 'renorm': False, 'renorm_clipping': None, 'renorm_momentum': 0.99}.\n\nException encountered: Unrecognized keyword arguments passed to BatchNormalization: {'renorm': False, 'renorm_clipping': None, 'renorm_momentum': 0.99}",
+    "top1_accuracy": 0.0
+  },
+  {
+    "model": "potato_specialist.keras",
+    "error": "<class 'keras.src.models.functional.Functional'> could not be deserialized properly. Please ensure that components that are Python object instances (layers, models, etc.) returned by `get_config()` are explicitly deserialized in the model's `from_config()` method.\n\nconfig={'module': 'keras.src.models.functional', 'class_name': 'Functional', 'config': {}, 'registered_name': 'Functional', 'build_config': {'input_shape': None}, 'compile_config': None}.\n\nException encountered: <class 'keras.src.layers.normalization.batch_normalization.BatchNormalization'> could not be deserialized properly. Please ensure that components that are Python object instances (layers, models, etc.) returned by `get_config()` are explicitly deserialized in the model's `from_config()` method.\n\nconfig={'module': 'keras.layers', 'class_name': 'BatchNormalization', 'config': {'name': 'batch_normalization', 'trainable': True, 'dtype': {'module': 'keras', 'class_name': 'DTypePolicy', 'config': {'name': 'float32'}, 'registered_name': None, 'shared_object_id': 13259315920}, 'axis': -1, 'momentum': 0.99, 'epsilon': 0.001, 'center': True, 'scale': True, 'beta_initializer': {'module': 'keras.initializers', 'class_name': 'Zeros', 'config': {}, 'registered_name': None}, 'gamma_initializer': {'module': 'keras.initializers', 'class_name': 'Ones', 'config': {}, 'registered_name': None}, 'moving_mean_initializer': {'module': 'keras.initializers', 'class_name': 'Zeros', 'config': {}, 'registered_name': None}, 'moving_variance_initializer': {'module': 'keras.initializers', 'class_name': 'Ones', 'config': {}, 'registered_name': None}, 'beta_regularizer': None, 'gamma_regularizer': None, 'beta_constraint': None, 'gamma_constraint': None, 'synchronized': False, 'renorm': False, 'renorm_clipping': None, 'renorm_momentum': 0.99}, 'registered_name': None, 'build_config': {'input_shape': [None, 96, 96, 32]}, 'name': 'batch_normalization', 'inbound_nodes': [{'args': [{'class_name': '__keras_tensor__', 'config': {'shape': [None, 96, 96, 32], 'dtype': 'float32', 'keras_history': ['conv2d', 0, 0]}}], 'kwargs': {'mask': None}}]}.\n\nException encountered: Error when deserializing class 'BatchNormalization' using config={'name': 'batch_normalization', 'trainable': True, 'dtype': 'float32', 'axis': -1, 'momentum': 0.99, 'epsilon': 0.001, 'center': True, 'scale': True, 'beta_initializer': {'module': 'keras.initializers', 'class_name': 'Zeros', 'config': {}, 'registered_name': None}, 'gamma_initializer': {'module': 'keras.initializers', 'class_name': 'Ones', 'config': {}, 'registered_name': None}, 'moving_mean_initializer': {'module': 'keras.initializers', 'class_name': 'Zeros', 'config': {}, 'registered_name': None}, 'moving_variance_initializer': {'module': 'keras.initializers', 'class_name': 'Ones', 'config': {}, 'registered_name': None}, 'beta_regularizer': None, 'gamma_regularizer': None, 'beta_constraint': None, 'gamma_constraint': None, 'synchronized': False, 'renorm': False, 'renorm_clipping': None, 'renorm_momentum': 0.99}.\n\nException encountered: Unrecognized keyword arguments passed to BatchNormalization: {'renorm': False, 'renorm_clipping': None, 'renorm_momentum': 0.99}",
+    "top1_accuracy": 0.0
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "individual_models": {
+    "best_simple_cnn": 0.7891566265060241,
+    "best_mobilenetv3": 0.12267250821467689,
+    "plant_disease_realworld_15class_best_v4": 0.07694414019715225,
+    "plant_disease_repo_finetuned": 0.07311062431544359,
+    "fixed_plant_disease_repo_mobilenet": 0.02573932092004381,
+    "fixed_potato_specialist": 0.06845564074479737
+  },
+  "simple_ensemble": 0.7897042716319824,
+  "weighted_ensemble": 0.7894304490690033
+}

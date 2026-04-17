@@ -1,0 +1,14 @@
+{
+  "simple_cnn": {
+    "test_accuracy": 0.7688098549842834,
+    "epochs_trained": 30,
+    "final_train_accuracy": 0.8962684273719788,
+    "final_val_accuracy": 0.40766075253486633
+  },
+  "mobilenetv3": {
+    "test_accuracy": 0.1367989033460617,
+    "epochs_trained": 24,
+    "final_train_accuracy": 0.0831906870007515,
+    "final_val_accuracy": 0.13543091714382172
+  }
+}

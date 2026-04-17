@@ -1,0 +1,17 @@
+Flask==3.0.0
+Flask-Cors==4.0.0
+numpy==1.26.4
+Pillow==10.2.0
+gunicorn==21.2.0
+requests==2.31.0
+gtts==2.5.0
+deep-translator==1.11.4
+groq==0.9.0
+tensorflow==2.16.1
+psutil==5.9.5
+python-dotenv==1.0.0
+python-magic==0.4.27
+opencv-python==4.9.0.80
+redis==5.0.1
+scipy==1.12.0
+pytest==8.3.5
