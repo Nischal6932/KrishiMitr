@@ -54,12 +54,8 @@ void setup() {
   pinMode(RELAY_PIN, OUTPUT);
   pinMode(LED_PIN, OUTPUT);
   
-  // Ensure pump is OFF initially
-  if (RELAY_ACTIVE_LOW) {
-    digitalWrite(RELAY_PIN, HIGH);  // HIGH = OFF for active LOW relays
-  } else {
-    digitalWrite(RELAY_PIN, LOW);   // LOW = OFF for active HIGH relays
-  }
+  // Ensure pump is OFF initially - FORCE IT
+  forcePumpOff();
   digitalWrite(LED_PIN, LOW);
   
   // Connect to WiFi
@@ -119,6 +115,8 @@ int readMoisture() {
   return moisture;
 }
 
+void forcePumpOff();
+
 void setPump(bool turnOn) {
   if (turnOn) {
     // Turn pump ON
@@ -133,15 +131,19 @@ void setPump(bool turnOn) {
   }
 }
 
+void forcePumpOff() {
+  // Force relay pin to OFF state regardless of pumpState variable
+  digitalWrite(RELAY_PIN, RELAY_ACTIVE_LOW ? HIGH : LOW);
+  pumpState = false;
+  Serial.println("[PUMP] FORCED OFF - Pin set to: " + String(RELAY_ACTIVE_LOW ? "HIGH" : "LOW"));
+}
+
 void controlPump(int moisture) {
-  // ALWAYS turn off pump if moisture is above stop threshold
-  // This is a safety check - pump should never run when soil is wet
+  // SAFETY: Always turn OFF pump if moisture is above stop threshold
   if (moisture > pumpStopThreshold) {
-    if (pumpState) {
-      setPump(false);
-      Serial.println("[PUMP] AUTO-OFF: Soil wet enough (" + String(moisture) + "%)");
-    }
-    return;  // Exit - no need to check start condition
+    setPump(false);
+    Serial.println("[PUMP] AUTO-OFF: Soil wet enough (" + String(moisture) + "%)");
+    return;
   }
   
   // Turn ON pump only if moisture is below start threshold
