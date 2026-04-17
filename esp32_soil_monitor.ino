@@ -46,6 +46,14 @@ unsigned long lastUpdateTime = 0;
 bool pumpState = false;
 int retryCount = 0;
 
+// Forward declarations
+void forcePumpOff();
+void connectWiFi();
+void sendData(int moisture);
+void setPump(bool turnOn);
+void controlPump(int moisture);
+int readMoisture();
+
 void setup() {
   Serial.begin(115200);
   Serial.println("\n=== KrishiMitr ESP32 Starting ===");
@@ -114,8 +122,6 @@ int readMoisture() {
   
   return moisture;
 }
-
-void forcePumpOff();
 
 void setPump(bool turnOn) {
   if (turnOn) {
