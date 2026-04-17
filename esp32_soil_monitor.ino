@@ -33,7 +33,7 @@ int pumpStopThreshold = 70;   // Turn OFF pump when above 70%
 // ========== RELAY CONFIGURATION ==========
 // Most relay modules are ACTIVE LOW (LOW = ON, HIGH = OFF)
 // Set to false if your relay is ACTIVE HIGH (HIGH = ON, LOW = OFF)
-const bool RELAY_ACTIVE_LOW = true;
+const bool RELAY_ACTIVE_LOW = false;  // Active HIGH relay (HIGH = ON)
 
 // ========== TIMING ==========
 const unsigned long updateInterval = 10000;    // Send data every 10 seconds
